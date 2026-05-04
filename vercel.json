@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/livom_support_hub_v6.html" }
+  ]
+}
