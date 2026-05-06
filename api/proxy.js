@@ -23,6 +23,7 @@ export default async function handler(req) {
 
   try {
     const body = await req.json();
+    console.log(body);
     console.log("KEY EXISTS:", !!process.env.ANTHROPIC_API_KEY);
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
