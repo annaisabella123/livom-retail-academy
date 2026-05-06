@@ -758,12 +758,10 @@ async function aiSend(){
       addMsg('bot','Bitte zuerst den API-Key oben eingeben und auf Speichern klicken.');
       busy=false;btn.disabled=false;return;
     }
-    var res=await fetch('https://api.anthropic.com/v1/messages',{
+    var res=await fetch('/api/proxy',{
       method:'POST',
       headers:{
         'Content-Type':'application/json',
-        'x-api-key':apiKey,
-        'anthropic-version':'2023-06-01'
       },
       body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,system:FINAL_SYS,messages:hist})
     });
