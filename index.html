@@ -195,7 +195,7 @@ table.mx tr:hover td{background:var(--s50)}
 <div class="topbar">
   <div class="logo">L</div>
   <div><span class="top-title">Livom Support Hub</span><span class="top-sub">Retail Academy</span></div>
-  <div class="top-r">internal · for showroom teams</div>
+  <div class="top-r">internal · v7 · for showroom teams</div>
 </div>
 
 <div class="nav">
@@ -441,12 +441,7 @@ table.mx tr:hover td{background:var(--s50)}
       <div class="ai-ico">L</div>
       <div><div class="ai-ht">Livom Support-Assistent</div><div class="ai-hs">kennt alle Teams, Produkte &amp; CS-Prozesse · leitet bei Bedarf weiter</div></div>
     </div>
-    <div id="ai-key-bar" style="padding:9px 16px;border-bottom:1px solid var(--br);display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--al)">
-      <span style="font-size:11px;font-weight:600;color:var(--ad);white-space:nowrap">API-Key:</span>
-      <input id="ai-key-inp" type="password" placeholder="sk-ant-api03-..." style="flex:1;min-width:180px;padding:5px 10px;border:1px solid #E8C97A;border-radius:6px;font-size:11px;font-family:monospace;background:#fff;color:var(--tx);outline:none">
-      <button onclick="saveKey()" style="padding:5px 12px;background:var(--g);color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer">Speichern</button>
-      <span id="key-status" style="font-size:10px;color:var(--ad)"></span>
-    </div>
+
     <div class="ai-chat" id="ai-chat">
       <div class="ai-msg b">
         <div class="aav b">L</div>
@@ -721,26 +716,7 @@ function rmTyping(){var t=document.getElementById('typing-dot');if(t)t.remove();
 
 function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-function saveKey(){
-  var v=document.getElementById('ai-key-inp').value.trim();
-  if(!v) return;
-  localStorage.setItem('livom_api_key',v);
-  document.getElementById('ai-key-inp').value='';
-  document.getElementById('ai-key-inp').placeholder='Key gespeichert ✓';
-  document.getElementById('ai-key-bar').style.background='var(--gl)';
-  document.getElementById('key-status').textContent='Gespeichert ✓';
-  document.getElementById('key-status').style.color='var(--gd)';
-}
-(function(){
-  if(localStorage.getItem('livom_api_key')){
-    var bar=document.getElementById('ai-key-bar');
-    var inp=document.getElementById('ai-key-inp');
-    var st=document.getElementById('key-status');
-    if(bar) bar.style.background='var(--gl)';
-    if(inp) inp.placeholder='Key gespeichert ✓';
-    if(st){st.textContent='Gespeichert ✓';st.style.color='var(--gd)';}
-  }
-})();
+
 async function aiSend(){
   var inp=document.getElementById('ai-inp');
   var btn=document.getElementById('ai-btn');
@@ -752,19 +728,9 @@ async function aiSend(){
   hist.push({role:'user',content:txt});
   showTyping();
   try{
-    var apiKey=localStorage.getItem('livom_api_key')||'';
-    if(!apiKey){
-      rmTyping();
-      addMsg('bot','Bitte zuerst den API-Key oben eingeben und auf Speichern klicken.');
-      busy=false;btn.disabled=false;return;
-    }
-    var res=await fetch('https://api.anthropic.com/v1/messages',{
+    var res=await fetch('https://livom-proxy.anna-c0a.workers.dev',{
       method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':apiKey,
-        'anthropic-version':'2023-06-01'
-      },
+      headers:{'Content-Type':'application/json'},
       body:JSON.stringify({model:'claude-3-5-sonnet-20241022',max_tokens:1200,system:FINAL_SYS,messages:hist})
     });
     var data=await res.json();
