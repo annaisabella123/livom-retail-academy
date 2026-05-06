@@ -763,7 +763,7 @@ async function aiSend(){
       headers:{
         'Content-Type':'application/json',
       },
-      body:JSON.stringify({model:'claude-3-haiku-20240307',max_tokens:1200,system:FINAL_SYS,messages:hist})
+      body:JSON.stringify({model:'claude-3-5-haiku-20241022',max_tokens:1200,system:FINAL_SYS,messages:hist})
     });
     var data=await res.json();
     var reply=(data.content&&data.content[0]&&data.content[0].text)?data.content[0].text:(data.error?'API Fehler: '+data.error.message:'Fehler — bitte erneut versuchen.');
